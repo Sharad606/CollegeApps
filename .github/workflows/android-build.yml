@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build CollegeApp APK
 
 on:
   push:
@@ -14,22 +14,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup .NET
+      - name: Setup .NET 8
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: 8.0.x
 
-      - name: Install MAUI workload
+      - name: Install MAUI workloads
         run: dotnet workload install maui
 
       - name: Restore dependencies
-        run: dotnet restore ./CollegeApp.sln
+        run: dotnet restore ./CollegeApp.csproj
 
       - name: Build APK
-        run: dotnet build ./CollegeApp.sln -c Release -f net8.0-android /p:AndroidPackageFormat=apk
+        run: dotnet build ./CollegeApp.csproj -c Release -f net8.0-android /p:AndroidPackageFormat=apk
 
-      - name: Publish APK artifact
-        uses: actions/upload-artifact@v3
+      - name: Find and upload APK
+        run: |
+          APK=$(find . -type f -name "*.apk" | head -n 1)
+          echo "Found APK: $APK"
+          mkdir -p artifact
+          cp "$APK" artifact/
+        shell: bash
+
+      - uses: actions/upload-artifact@v3
         with:
           name: CollegeApp-APK
-          path: ./CollegeApp/bin/Release/net8.0-android/android-arm64/CollegeApp.apk
+          path: artifact/
