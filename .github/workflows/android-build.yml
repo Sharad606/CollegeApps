@@ -1,0 +1,35 @@
+name: Build Android APK
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install MAUI workload
+        run: dotnet workload install maui
+
+      - name: Restore dependencies
+        run: dotnet restore ./CollegeApp.sln
+
+      - name: Build APK
+        run: dotnet build ./CollegeApp.sln -c Release -f net8.0-android /p:AndroidPackageFormat=apk
+
+      - name: Publish APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: CollegeApp-APK
+          path: ./CollegeApp/bin/Release/net8.0-android/android-arm64/CollegeApp.apk
