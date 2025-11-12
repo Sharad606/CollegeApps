@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>MonoAndroid10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>CollegeApp</RootNamespace>
+    <ApplicationId>com.example.collegeapp</ApplicationId>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="MainActivity.cs" />
+    <Compile Include="YesDetailsActivity.cs" />
+    <Compile Include="SelectionMenuActivity.cs" />
+    <Compile Include="SubcategoryActivity.cs" />
+    <Compile Include="NotesActivity.cs" />
+    <Compile Include="DrawLinesView.cs" />
+    <Compile Include="AIButton.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+</Project>
+
